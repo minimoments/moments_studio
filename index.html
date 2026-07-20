@@ -1,0 +1,895 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>星绘 AI｜即刻创作</title>
+  <style>
+    :root{
+      --bg0:#070A12; --bg1:#0B1224; --card:rgba(255,255,255,.06);
+      --bd:rgba(255,255,255,.10); --txt:#EAF0FF; --mut:#A8B3D6;
+      --pri:#7C5CFF; --pri2:#2FE6FF; --ok:#38D39F; --warn:#FFCA55;
+      --shadow: 0 18px 50px rgba(0,0,0,.45);
+      --r12:12px; --r16:16px; --r20:20px;
+      --max:1120px;
+    }
+    html[data-theme="light"]{
+      --bg0:#F6F8FF; --bg1:#EEF2FF; --card:rgba(10,18,36,.06);
+      --bd:rgba(10,18,36,.10); --txt:#0B1224; --mut:#4B587A;
+      --shadow: 0 16px 40px rgba(10,18,36,.16);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+      color:var(--txt);
+      background:
+        radial-gradient(1200px 800px at 10% 10%, rgba(124,92,255,.28), transparent 55%),
+        radial-gradient(1200px 800px at 90% 20%, rgba(47,230,255,.18), transparent 55%),
+        radial-gradient(900px 600px at 60% 90%, rgba(56,211,159,.14), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      min-height:100vh;
+    }
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:var(--max); margin:0 auto; padding:0 18px}
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(14px);
+      background: color-mix(in oklab, var(--bg0) 72%, transparent);
+      border-bottom:1px solid var(--bd);
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      height:64px; gap:12px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px;
+    }
+    .logo{
+      width:34px;height:34px;border-radius:12px;
+      background: conic-gradient(from 220deg, var(--pri), var(--pri2), var(--ok), var(--pri));
+      box-shadow: 0 10px 30px rgba(124,92,255,.25);
+      border:1px solid color-mix(in oklab, var(--bd) 70%, transparent);
+    }
+    .navlinks{display:flex; gap:14px; align-items:center; flex-wrap:wrap}
+    .navlinks a{
+      font-size:14px; color:var(--mut);
+      padding:8px 10px; border-radius:10px;
+    }
+    .navlinks a:hover{background:color-mix(in oklab, var(--card) 70%, transparent); color:var(--txt)}
+    .actions{display:flex; gap:10px; align-items:center}
+    .btn{
+      border:1px solid var(--bd);
+      background: color-mix(in oklab, var(--card) 75%, transparent);
+      color:var(--txt);
+      padding:10px 12px; border-radius:12px;
+      font-size:14px; cursor:pointer;
+      display:inline-flex; gap:8px; align-items:center;
+      box-shadow:none;
+    }
+    .btn:hover{transform: translateY(-1px); transition: .15s ease; box-shadow: var(--shadow)}
+    .btn.primary{
+      border-color: color-mix(in oklab, var(--pri) 55%, var(--bd));
+      background: linear-gradient(135deg, color-mix(in oklab, var(--pri) 70%, transparent), color-mix(in oklab, var(--pri2) 50%, transparent));
+    }
+    .btn.ghost{background:transparent}
+    .pill{
+      font-size:12px; color:var(--mut);
+      border:1px solid var(--bd);
+      padding:6px 10px; border-radius:999px;
+      background: color-mix(in oklab, var(--card) 55%, transparent);
+      display:inline-flex; gap:8px; align-items:center;
+    }
+    .hero{
+      padding:54px 0 22px;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:22px;
+      align-items:stretch;
+    }
+    @media (max-width: 980px){ .hero{grid-template-columns: 1fr; padding-top:28px} .navlinks{display:none} }
+    .h1{
+      font-size:44px; line-height:1.08; margin:14px 0 10px;
+      letter-spacing:-.6px;
+    }
+    .sub{
+      color:var(--mut); font-size:16px; line-height:1.65; margin:0 0 18px;
+      max-width: 58ch;
+    }
+    .grad{
+      background: linear-gradient(90deg, var(--pri), var(--pri2));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .ctaRow{display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-top:12px}
+    .card{
+      background: color-mix(in oklab, var(--card) 88%, transparent);
+      border:1px solid var(--bd);
+      border-radius: var(--r20);
+      box-shadow: var(--shadow);
+    }
+    .composer{
+      padding:16px;
+      display:flex; flex-direction:column; gap:10px;
+      min-height: 320px;
+    }
+    .composer .head{display:flex; justify-content:space-between; align-items:center}
+    .composer .title{font-weight:800}
+    .tabs{display:flex; gap:8px; flex-wrap:wrap}
+    .tab{
+      border:1px solid var(--bd);
+      background:transparent;
+      color:var(--mut);
+      padding:8px 10px; border-radius:12px;
+      cursor:pointer; font-size:13px;
+    }
+    .tab[aria-selected="true"]{
+      color:var(--txt);
+      border-color: color-mix(in oklab, var(--pri) 55%, var(--bd));
+      background: color-mix(in oklab, var(--card) 90%, transparent);
+    }
+    textarea{
+      width:100%; min-height:110px; resize:none;
+      border-radius:14px; border:1px solid var(--bd);
+      background: color-mix(in oklab, var(--bg0) 35%, transparent);
+      color:var(--txt);
+      padding:12px; line-height:1.5; font-size:14px;
+      outline:none;
+    }
+    textarea:focus{border-color: color-mix(in oklab, var(--pri2) 55%, var(--bd))}
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between}
+    .row .left{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+    .select{
+      border:1px solid var(--bd);
+      background: color-mix(in oklab, var(--bg0) 25%, transparent);
+      color:var(--txt);
+      padding:9px 10px; border-radius:12px;
+      font-size:13px;
+    }
+    .mini{
+      font-size:12px; color:var(--mut); line-height:1.4;
+    }
+    .preview{
+      border:1px dashed color-mix(in oklab, var(--bd) 80%, transparent);
+      border-radius:16px;
+      background:
+        radial-gradient(600px 240px at 20% 20%, rgba(124,92,255,.22), transparent 60%),
+        radial-gradient(520px 260px at 80% 20%, rgba(47,230,255,.16), transparent 60%),
+        radial-gradient(520px 260px at 40% 90%, rgba(56,211,159,.14), transparent 60%),
+        linear-gradient(180deg, color-mix(in oklab, var(--bg0) 15%, transparent), transparent);
+      height: 96px;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:12px 12px 12px 14px;
+      gap:10px;
+    }
+    .spark{
+      width:36px;height:36px;border-radius:14px;
+      background: conic-gradient(from 180deg, rgba(255,255,255,.08), rgba(255,255,255,.0), rgba(255,255,255,.10));
+      border:1px solid var(--bd);
+    }
+    .section{padding:38px 0 8px}
+    .section h2{margin:0 0 10px; font-size:24px}
+    .section p{margin:0 0 18px; color:var(--mut); line-height:1.7}
+    .grid3{display:grid; grid-template-columns: repeat(3, 1fr); gap:14px}
+    .grid2{display:grid; grid-template-columns: repeat(2, 1fr); gap:14px}
+    @media (max-width: 980px){ .grid3{grid-template-columns:1fr} .grid2{grid-template-columns:1fr} }
+    .feat{padding:16px}
+    .kicker{display:flex; align-items:center; gap:10px; margin-bottom:8px}
+    .icon{
+      width:34px;height:34px;border-radius:14px;
+      border:1px solid var(--bd);
+      background: linear-gradient(135deg, rgba(124,92,255,.22), rgba(47,230,255,.14));
+      display:grid; place-items:center;
+      font-weight:900;
+    }
+    .feat h3{margin:0 0 6px; font-size:16px}
+    .feat .d{color:var(--mut); margin:0; font-size:13px; line-height:1.6}
+    .gallery{
+      display:grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap:10px;
+    }
+    @media (max-width: 980px){ .gallery{grid-template-columns: repeat(2, 1fr)} }
+    .tile{
+      aspect-ratio: 1 / 1;
+      border-radius:16px;
+      border:1px solid var(--bd);
+      background:
+        radial-gradient(120px 120px at 30% 30%, rgba(124,92,255,.28), transparent 60%),
+        radial-gradient(140px 140px at 70% 35%, rgba(47,230,255,.20), transparent 60%),
+        radial-gradient(160px 160px at 50% 80%, rgba(56,211,159,.16), transparent 60%),
+        linear-gradient(180deg, color-mix(in oklab, var(--bg0) 20%, transparent), transparent);
+      position:relative;
+      overflow:hidden;
+    }
+    .tile::after{
+      content:"";
+      position:absolute; inset:-40%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.10), transparent);
+      transform: rotate(18deg);
+      animation: sheen 7s linear infinite;
+    }
+    @keyframes sheen{
+      0%{transform:translateX(-30%) rotate(18deg)}
+      100%{transform:translateX(30%) rotate(18deg)}
+    }
+    .canvas{
+      padding:16px;
+      display:grid;
+      grid-template-columns: .95fr 1.05fr;
+      gap:14px;
+      align-items:stretch;
+    }
+    @media (max-width: 980px){ .canvas{grid-template-columns:1fr} }
+    .canvasPane{padding:14px}
+    .canvasPane h3{margin:0 0 8px; font-size:16px}
+    .canvasPane ul{margin:0; padding-left:18px; color:var(--mut); line-height:1.7; font-size:13px}
+    .shot{
+      border-radius:16px;
+      border:1px solid var(--bd);
+      background:
+        linear-gradient(135deg, rgba(124,92,255,.22), rgba(47,230,255,.14)),
+        radial-gradient(800px 300px at 20% 20%, rgba(255,255,255,.08), transparent 60%);
+      display:flex; flex-direction:column;
+      min-height: 220px;
+      overflow:hidden;
+      position:relative;
+    }
+    .shotTop{
+      padding:12px 12px 10px; display:flex; justify-content:space-between; align-items:center;
+      border-bottom:1px solid color-mix(in oklab, var(--bd) 70%, transparent);
+      background: color-mix(in oklab, var(--bg0) 30%, transparent);
+    }
+    .shotTop .dots{display:flex; gap:6px}
+    .dot{width:10px;height:10px;border-radius:50%; background:rgba(255,255,255,.14); border:1px solid var(--bd)}
+    .shotBody{
+      flex:1; display:grid; place-items:center; padding:16px;
+      color: color-mix(in oklab, var(--txt) 70%, var(--mut));
+      text-align:center;
+    }
+    .community{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+    }
+    @media (max-width: 980px){ .community{grid-template-columns:1fr} }
+    .work{
+      padding:14px;
+      display:flex; flex-direction:column; gap:10px;
+      cursor:pointer;
+    }
+    .thumb{
+      border-radius:16px;
+      border:1px solid var(--bd);
+      background:
+        radial-gradient(220px 160px at 30% 30%, rgba(124,92,255,.25), transparent 60%),
+        radial-gradient(220px 160px at 70% 30%, rgba(47,230,255,.18), transparent 60%),
+        radial-gradient(260px 180px at 50% 90%, rgba(56,211,159,.14), transparent 60%),
+        linear-gradient(180deg, color-mix(in oklab, var(--bg0) 18%, transparent), transparent);
+      aspect-ratio: 16 / 10;
+    }
+    .work .meta{display:flex; justify-content:space-between; align-items:center; gap:10px}
+    .who{display:flex; gap:10px; align-items:center}
+    .ava{width:28px;height:28px;border-radius:12px; border:1px solid var(--bd); background:rgba(255,255,255,.10)}
+    .work h3{margin:0; font-size:15px}
+    .work .t{margin:0; color:var(--mut); font-size:13px; line-height:1.6}
+    .footer{
+      padding:34px 0 42px;
+      border-top:1px solid var(--bd);
+      margin-top:26px;
+      color:var(--mut);
+    }
+    .footgrid{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:14px}
+    @media (max-width: 980px){ .footgrid{grid-template-columns:1fr} }
+    .footgrid a{color:var(--mut)}
+    .footgrid a:hover{color:var(--txt)}
+    .modal{
+      position:fixed; inset:0; z-index:100;
+      display:none;
+      background: rgba(0,0,0,.55);
+      backdrop-filter: blur(10px);
+      padding:18px;
+      align-items:center; justify-content:center;
+    }
+    .modal[open]{display:flex}
+    .dialog{
+      width:min(820px, 100%);
+      border-radius: 18px;
+      border:1px solid var(--bd);
+      background: color-mix(in oklab, var(--bg0) 75%, transparent);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .dialogTop{
+      display:flex; justify-content:space-between; align-items:center;
+      padding:12px 12px 12px 14px;
+      border-bottom:1px solid var(--bd);
+    }
+    .dialogTop strong{font-size:14px}
+    .dialogBody{padding:14px}
+    .close{padding:9px 10px}
+    .kbd{font-size:12px; padding:2px 8px; border-radius:10px; border:1px solid var(--bd); color:var(--mut)}
+    .note{
+      margin-top:12px;
+      color:var(--mut);
+      font-size:12px;
+      line-height:1.5;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="wrap nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div style="line-height:1.1">星绘 AI</div>
+          <div style="font-size:12px;color:var(--mut);font-weight:600">灵感即刻成片</div>
+        </div>
+      </div>
+
+      <nav class="navlinks" aria-label="主导航">
+        <a href="#capabilities" data-i18n="nav_cap">能力</a>
+        <a href="#gallery" data-i18n="nav_gallery">示例</a>
+        <a href="#canvas" data-i18n="nav_canvas">画布</a>
+        <a href="#community" data-i18n="nav_community">社区</a>
+        <a href="#pricing" data-i18n="nav_pricing">方案</a>
+      </nav>
+
+      <div class="actions">
+        <button class="btn ghost" id="themeBtn" type="button" title="切换主题">
+          <span aria-hidden="true">🌓</span><span data-i18n="theme">主题</span>
+        </button>
+        <button class="btn ghost" id="langBtn" type="button" title="切换语言">
+          <span aria-hidden="true">🌐</span><span id="langLabel">CN</span>
+        </button>
+        <a class="btn primary" href="#composer" data-i18n="go_create">立即创作</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero" id="composer">
+      <div>
+        <span class="pill"><span aria-hidden="true">✨</span><span data-i18n="pill">一站式 AI 创作工作台</span></span>
+        <h1 class="h1">
+          <span data-i18n="hero_h1_a">把一句话</span>
+          <span class="grad" data-i18n="hero_h1_b">变成镜头感作品</span>
+        </h1>
+        <p class="sub" data-i18n="hero_sub">
+          文生视频、图生视频、文生图与智能画布联动：从灵感、草图到成片，一页完成。此页面为静态演示模板，不包含真实生成能力。
+        </p>
+        <div class="ctaRow">
+          <a class="btn primary" href="#capabilities" data-i18n="cta_primary">开始探索能力</a>
+          <button class="btn" type="button" id="openDemo" data-i18n="cta_secondary">查看演示弹窗</button>
+          <span class="mini" data-i18n="hero_tip">提示：你可以直接替换文案、配色与卡片内容。</span>
+        </div>
+      </div>
+
+      <aside class="card composer" aria-label="创作输入区（演示）">
+        <div class="head">
+          <div class="title" data-i18n="composer_title">创作面板（演示）</div>
+          <span class="pill"><span aria-hidden="true">⚡</span><span data-i18n="composer_pill">极速草稿</span></span>
+        </div>
+
+        <div class="tabs" role="tablist" aria-label="创作类型">
+          <button class="tab" role="tab" aria-selected="true" data-mode="video" type="button" data-i18n="tab_video">视频生成</button>
+          <button class="tab" role="tab" aria-selected="false" data-mode="image" type="button" data-i18n="tab_image">图像生成</button>
+          <button class="tab" role="tab" aria-selected="false" data-mode="canvas" type="button" data-i18n="tab_canvas">智能画布</button>
+        </div>
+
+        <textarea id="prompt" placeholder="例：夜雨霓虹街头，一只戴耳机的猫缓慢回头，电影质感，柔焦，轻微手持运镜。"></textarea>
+
+        <div class="row">
+          <div class="left">
+            <select class="select" id="style">
+              <option value="cinematic">电影质感</option>
+              <option value="anime">赛璐璐动画</option>
+              <option value="ui">极简 UI</option>
+              <option value="real">写实摄影</option>
+            </select>
+            <select class="select" id="ratio">
+              <option value="16:9">16:9</option>
+              <option value="9:16">9:16</option>
+              <option value="1:1">1:1</option>
+              <option value="4:3">4:3</option>
+            </select>
+          </div>
+          <button class="btn primary" id="fakeGen" type="button" data-i18n="btn_generate">生成预览</button>
+        </div>
+
+        <div class="preview" id="preview">
+          <div style="display:flex; gap:12px; align-items:center">
+            <div class="spark" aria-hidden="true"></div>
+            <div>
+              <div style="font-weight:800" data-i18n="preview_title">预览区（占位）</div>
+              <div class="mini" id="previewText" data-i18n="preview_sub">点击“生成预览”将把提示词摘要展示在这里。</div>
+            </div>
+          </div>
+          <span class="kbd">Ctrl/⌘ + K</span>
+        </div>
+        <div class="note" data-i18n="composer_note">
+          这是一个纯前端静态模板：按钮与弹窗用于演示交互，你可以对接自己的后端接口。
+        </div>
+      </aside>
+    </section>
+
+    <section class="section" id="capabilities">
+      <h2 data-i18n="cap_h2">灵感即刻成片</h2>
+      <p data-i18n="cap_p">围绕“可控、连贯、好用”的创作体验设计：先快速出草稿，再逐步增强细节。</p>
+
+      <div class="grid3">
+        <div class="card feat">
+          <div class="kicker">
+            <div class="icon" aria-hidden="true">🎬</div>
+            <div>
+              <h3 data-i18n="cap1_t">流畅运镜，节奏自然</h3>
+              <p class="d" data-i18n="cap1_d">通过镜头模板与速度曲线，把“画面感”做成可选项。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card feat">
+          <div class="kicker">
+            <div class="icon" aria-hidden="true">🧩</div>
+            <div>
+              <h3 data-i18n="cap2_t">首尾帧约束，更可控</h3>
+              <p class="d" data-i18n="cap2_d">用起点与落点锁定叙事方向，让生成更贴近预期。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card feat">
+          <div class="kicker">
+            <div class="icon" aria-hidden="true">🀄</div>
+            <div>
+              <h3 data-i18n="cap3_t">中文提示词，易上手</h3>
+              <p class="d" data-i18n="cap3_d">写一句人话也能开工：支持风格、镜头、光影等标签组合。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" style="padding-top:26px">
+        <h2 data-i18n="img_h2">图像生成：从草图到成稿</h2>
+        <p data-i18n="img_p">用“画廊式示例”帮助你快速对齐风格（此处为占位图块，可替换为真实作品图）。</p>
+        <div class="gallery" id="gallery">
+          <div class="tile" title="示例 1"></div><div class="tile" title="示例 2"></div><div class="tile" title="示例 3"></div>
+          <div class="tile" title="示例 4"></div><div class="tile" title="示例 5"></div><div class="tile" title="示例 6"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="canvas">
+      <h2 data-i18n="canvas_h2">智能画布：多素材融合</h2>
+      <p data-i18n="canvas_p">把拼图、局部重绘、扩图与消除放进同一条工作流（演示版为 Tab 切换）。</p>
+
+      <div class="card canvas">
+        <div class="canvasPane">
+          <div class="tabs" role="tablist" aria-label="画布能力">
+            <button class="tab" role="tab" aria-selected="true" data-cv="layers" type="button" data-i18n="cv_layers">多图层编辑</button>
+            <button class="tab" role="tab" aria-selected="false" data-cv="control" type="button" data-i18n="cv_control">精细化控制</button>
+          </div>
+
+          <div id="cvText">
+            <h3 style="margin-top:12px" data-i18n="cv_h3">在一张画布里管理所有元素</h3>
+            <ul>
+              <li data-i18n="cv_li1">独立图层：主体、背景、文字、装饰分离</li>
+              <li data-i18n="cv_li2">局部修改：只改一个细节，不影响整体风格</li>
+              <li data-i18n="cv_li3">一键导出：多尺寸适配封面/海报/短视频</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="shot" aria-label="画布截图占位">
+          <div class="shotTop">
+            <div class="dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+            <span class="pill"><span aria-hidden="true">🧠</span><span data-i18n="shot_pill">交互演示</span></span>
+          </div>
+          <div class="shotBody" id="shotBody">
+            <div>
+              <div style="font-weight:900;font-size:16px;margin-bottom:6px" data-i18n="shot_title">画布预览占位</div>
+              <div class="mini" data-i18n="shot_sub">点击左侧 Tab 切换说明文案（你可换成真实截图）。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="community">
+      <h2 data-i18n="com_h2">创意社区：灵感流动</h2>
+      <p data-i18n="com_p">作品卡片是占位数据；点击卡片会弹出“同款”演示弹窗。</p>
+
+      <div class="community">
+        <div class="card work" data-work="A">
+          <div class="thumb" aria-hidden="true"></div>
+          <div class="meta">
+            <div class="who"><div class="ava" aria-hidden="true"></div><div><h3>Nova</h3><p class="t" data-i18n="work_a">霓虹雨夜 · 轻手持运镜</p></div></div>
+            <span class="pill"><span aria-hidden="true">✨</span><span data-i18n="btn_remix">创作同款</span></span>
+          </div>
+        </div>
+
+        <div class="card work" data-work="B">
+          <div class="thumb" aria-hidden="true" style="background:
+            radial-gradient(220px 160px at 30% 30%, rgba(255,202,85,.22), transparent 60%),
+            radial-gradient(220px 160px at 70% 30%, rgba(124,92,255,.20), transparent 60%),
+            radial-gradient(260px 180px at 50% 90%, rgba(47,230,255,.14), transparent 60%),
+            linear-gradient(180deg, color-mix(in oklab, var(--bg0) 18%, transparent), transparent);
+          "></div>
+          <div class="meta">
+            <div class="who"><div class="ava" aria-hidden="true"></div><div><h3>Rin</h3><p class="t" data-i18n="work_b">沙丘远景 · 史诗光影</p></div></div>
+            <span class="pill"><span aria-hidden="true">✨</span><span data-i18n="btn_remix">创作同款</span></span>
+          </div>
+        </div>
+
+        <div class="card work" data-work="C">
+          <div class="thumb" aria-hidden="true" style="background:
+            radial-gradient(220px 160px at 30% 30%, rgba(56,211,159,.22), transparent 60%),
+            radial-gradient(220px 160px at 70% 30%, rgba(47,230,255,.18), transparent 60%),
+            radial-gradient(260px 180px at 50% 90%, rgba(124,92,255,.16), transparent 60%),
+            linear-gradient(180deg, color-mix(in oklab, var(--bg0) 18%, transparent), transparent);
+          "></div>
+          <div class="meta">
+            <div class="who"><div class="ava" aria-hidden="true"></div><div><h3>Yuki</h3><p class="t" data-i18n="work_c">纸艺城市 · 极简海报</p></div></div>
+            <span class="pill"><span aria-hidden="true">✨</span><span data-i18n="btn_remix">创作同款</span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="pricing">
+      <h2 data-i18n="price_h2">方案与价格（示意）</h2>
+      <p data-i18n="price_p">此处为模板占位，便于你放置真实定价。按钮不产生实际扣费。</p>
+
+      <div class="grid3">
+        <div class="card feat">
+          <div class="kicker"><div class="icon" aria-hidden="true">🌱</div><div>
+            <h3 data-i18n="p1_t">入门</h3>
+            <p class="d" data-i18n="p1_d">适合尝鲜：每天少量额度，基础风格与比例。</p>
+          </div></div>
+          <div class="ctaRow"><button class="btn" type="button" data-plan="starter" data-i18n="p_btn">选择</button><span class="pill">¥0</span></div>
+        </div>
+
+        <div class="card feat" style="border-color: color-mix(in oklab, var(--pri2) 35%, var(--bd));">
+          <div class="kicker"><div class="icon" aria-hidden="true">🚀</div><div>
+            <h3 data-i18n="p2_t">进阶</h3>
+            <p class="d" data-i18n="p2_d">适合高频创作：更快队列，更多控制项与导出。</p>
+          </div></div>
+          <div class="ctaRow"><button class="btn primary" type="button" data-plan="pro" data-i18n="p_btn">选择</button><span class="pill">¥49</span></div>
+        </div>
+
+        <div class="card feat">
+          <div class="kicker"><div class="icon" aria-hidden="true">🏢</div><div>
+            <h3 data-i18n="p3_t">团队</h3>
+            <p class="d" data-i18n="p3_d">适合协作：成员管理、共享素材库与统一风格。</p>
+          </div></div>
+          <div class="ctaRow"><button class="btn" type="button" data-plan="team" data-i18n="p_btn">选择</button><span class="pill">联系销售</span></div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footgrid">
+        <div>
+          <div class="brand" style="margin-bottom:10px">
+            <div class="logo" aria-hidden="true"></div>
+            <div style="font-weight:900">星绘 AI</div>
+          </div>
+          <div class="mini" data-i18n="foot_about">
+            这是一个用于 GitHub Pages 的静态首页模板：可改成你的产品官网、作品集或落地页。
+          </div>
+        </div>
+        <div>
+          <div style="font-weight:800;margin-bottom:10px" data-i18n="foot_links">链接</div>
+          <div style="display:grid;gap:8px">
+            <a href="#composer" data-i18n="foot_create">立即创作</a>
+            <a href="#community" data-i18n="foot_explore">探索社区</a>
+            <a href="#canvas" data-i18n="foot_canvas">智能画布</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-weight:800;margin-bottom:10px" data-i18n="foot_legal">条款</div>
+          <div style="display:grid;gap:8px">
+            <a href="javascript:void(0)" data-i18n="foot_terms">用户协议（占位）</a>
+            <a href="javascript:void(0)" data-i18n="foot_privacy">隐私政策（占位）</a>
+            <a href="javascript:void(0)" data-i18n="foot_contact">联系邮箱：hello@example.com</a>
+          </div>
+        </div>
+      </div>
+      <div class="mini" style="margin-top:16px">© <span id="year"></span> XingHui AI. Template Demo.</div>
+    </footer>
+  </main>
+
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="演示弹窗">
+    <div class="dialog">
+      <div class="dialogTop">
+        <strong id="modalTitle">演示</strong>
+        <button class="btn close" id="closeModal" type="button">关闭 <span class="kbd">Esc</span></button>
+      </div>
+      <div class="dialogBody">
+        <div class="grid2">
+          <div class="card feat">
+            <div class="kicker"><div class="icon" aria-hidden="true">🧠</div><div>
+              <h3 id="modalH3">同款提示词（示意）</h3>
+              <p class="d" id="modalDesc">这里会显示你点击的作品卡片对应的提示词模板与参数建议。</p>
+            </div></div>
+          </div>
+          <div class="card feat">
+            <div class="kicker"><div class="icon" aria-hidden="true">⚙️</div><div>
+              <h3>参数建议</h3>
+              <p class="d" id="modalParams">风格：电影质感｜比例：16:9｜时长：4s｜运镜：慢推</p>
+            </div></div>
+          </div>
+        </div>
+        <div class="ctaRow" style="margin-top:12px">
+          <button class="btn primary" id="applyToPrompt" type="button">应用到输入框</button>
+          <button class="btn" id="copyPrompt" type="button">复制提示词</button>
+          <span class="mini" id="copyHint"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const i18n = {
+      zh: {
+        nav_cap:"能力", nav_gallery:"示例", nav_canvas:"画布", nav_community:"社区", nav_pricing:"方案",
+        theme:"主题", go_create:"立即创作",
+        pill:"一站式 AI 创作工作台",
+        hero_h1_a:"把一句话", hero_h1_b:"变成镜头感作品",
+        hero_sub:"文生视频、图生视频、文生图与智能画布联动：从灵感、草图到成片，一页完成。此页面为静态演示模板，不包含真实生成能力。",
+        cta_primary:"开始探索能力", cta_secondary:"查看演示弹窗", hero_tip:"提示：你可以直接替换文案、配色与卡片内容。",
+        composer_title:"创作面板（演示）", composer_pill:"极速草稿",
+        tab_video:"视频生成", tab_image:"图像生成", tab_canvas:"智能画布",
+        btn_generate:"生成预览",
+        preview_title:"预览区（占位）", preview_sub:"点击“生成预览”将把提示词摘要展示在这里。",
+        composer_note:"这是一个纯前端静态模板：按钮与弹窗用于演示交互，你可以对接自己的后端接口。",
+        cap_h2:"灵感即刻成片", cap_p:"围绕“可控、连贯、好用”的创作体验设计：先快速出草稿，再逐步增强细节。",
+        cap1_t:"流畅运镜，节奏自然", cap1_d:"通过镜头模板与速度曲线，把“画面感”做成可选项。",
+        cap2_t:"首尾帧约束，更可控", cap2_d:"用起点与落点锁定叙事方向，让生成更贴近预期。",
+        cap3_t:"中文提示词，易上手", cap3_d:"写一句人话也能开工：支持风格、镜头、光影等标签组合。",
+        img_h2:"图像生成：从草图到成稿", img_p:"用“画廊式示例”帮助你快速对齐风格（此处为占位图块，可替换为真实作品图）。",
+        canvas_h2:"智能画布：多素材融合", canvas_p:"把拼图、局部重绘、扩图与消除放进同一条工作流（演示版为 Tab 切换）。",
+        cv_layers:"多图层编辑", cv_control:"精细化控制",
+        cv_h3:"在一张画布里管理所有元素",
+        cv_li1:"独立图层：主体、背景、文字、装饰分离",
+        cv_li2:"局部修改：只改一个细节，不影响整体风格",
+        cv_li3:"一键导出：多尺寸适配封面/海报/短视频",
+        shot_pill:"交互演示", shot_title:"画布预览占位", shot_sub:"点击左侧 Tab 切换说明文案（你可换成真实截图）。",
+        com_h2:"创意社区：灵感流动", com_p:"作品卡片是占位数据；点击卡片会弹出“同款”演示弹窗。",
+        btn_remix:"创作同款", work_a:"霓虹雨夜 · 轻手持运镜", work_b:"沙丘远景 · 史诗光影", work_c:"纸艺城市 · 极简海报",
+        price_h2:"方案与价格（示意）", price_p:"此处为模板占位，便于你放置真实定价。按钮不产生实际扣费。",
+        p1_t:"入门", p1_d:"适合尝鲜：每天少量额度，基础风格与比例。",
+        p2_t:"进阶", p2_d:"适合高频创作：更快队列，更多控制项与导出。",
+        p3_t:"团队", p3_d:"适合协作：成员管理、共享素材库与统一风格。",
+        p_btn:"选择",
+        foot_about:"这是一个用于 GitHub Pages 的静态首页模板：可改成你的产品官网、作品集或落地页。",
+        foot_links:"链接", foot_create:"立即创作", foot_explore:"探索社区", foot_canvas:"智能画布",
+        foot_legal:"条款", foot_terms:"用户协议（占位）", foot_privacy:"隐私政策（占位）", foot_contact:"联系邮箱：hello@example.com"
+      },
+      en: {
+        nav_cap:"Capabilities", nav_gallery:"Gallery", nav_canvas:"Canvas", nav_community:"Community", nav_pricing:"Plans",
+        theme:"Theme", go_create:"Get Started",
+        pill:"All‑in‑one AI creation workspace",
+        hero_h1_a:"Turn a sentence", hero_h1_b:"into cinematic content",
+        hero_sub:"Text-to-video, image-to-video, text-to-image, and a unified canvas workflow. This is a static demo template (no real generation).",
+        cta_primary:"Explore capabilities", cta_secondary:"Open demo modal", hero_tip:"Tip: replace copy, colors, and cards freely.",
+        composer_title:"Creation Panel (Demo)", composer_pill:"Fast Draft",
+        tab_video:"Video", tab_image:"Image", tab_canvas:"Canvas",
+        btn_generate:"Generate Preview",
+        preview_title:"Preview (Placeholder)", preview_sub:"Click “Generate Preview” to display a short summary here.",
+        composer_note:"Pure static template: buttons/modals demonstrate interactions; hook up your own API later.",
+        cap_h2:"From idea to clip", cap_p:"Designed for controllability and fast iteration: draft first, refine next.",
+        cap1_t:"Smooth camera moves", cap1_d:"Pick a camera template and speed curve to get motion instantly.",
+        cap2_t:"Start/End frame constraints", cap2_d:"Anchor the narrative direction for more predictable outputs.",
+        cap3_t:"Natural prompts", cap3_d:"Write normally—combine style, lighting, and lens tags as needed.",
+        img_h2:"Image generation: sketch to final", img_p:"A quick gallery to align styles (placeholder tiles; replace with real images).",
+        canvas_h2:"Smart canvas: multi‑asset fusion", canvas_p:"Collage, inpainting, outpainting, and removal in one workflow (demo uses tabs).",
+        cv_layers:"Layer editing", cv_control:"Fine controls",
+        cv_h3:"Manage every element on one canvas",
+        cv_li1:"Separate layers for subject/background/text",
+        cv_li2:"Edit a detail without breaking the whole style",
+        cv_li3:"Export multiple sizes for covers/posters/shorts",
+        shot_pill:"Interactive demo", shot_title:"Canvas placeholder", shot_sub:"Switch tabs on the left; replace with real screenshots later.",
+        com_h2:"Community: inspiration feed", com_p:"Cards are sample data; click a card to open a remix demo modal.",
+        btn_remix:"Remix", work_a:"Neon rain · slow handheld", work_b:"Dune vista · epic light", work_c:"Paper city · minimal poster",
+        price_h2:"Plans & pricing (mock)", price_p:"Template placeholder for real pricing. Buttons do not charge anything.",
+        p1_t:"Starter", p1_d:"For trying it out: small daily quota and basic options.",
+        p2_t:"Pro", p2_d:"For frequent creation: faster queue and more controls.",
+        p3_t:"Team", p3_d:"For collaboration: members, shared assets, consistent style.",
+        p_btn:"Choose",
+        foot_about:"A GitHub Pages friendly static landing template: use as product site, portfolio, or campaign page.",
+        foot_links:"Links", foot_create:"Get Started", foot_explore:"Explore", foot_canvas:"Canvas",
+        foot_legal:"Legal", foot_terms:"Terms (placeholder)", foot_privacy:"Privacy (placeholder)", foot_contact:"Email: hello@example.com"
+      }
+    };
+
+    const $ = (s, r=document) => r.querySelector(s);
+    const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+
+    const modal = $("#modal");
+    const modalTitle = $("#modalTitle");
+    const modalH3 = $("#modalH3");
+    const modalDesc = $("#modalDesc");
+    const modalParams = $("#modalParams");
+    const applyToPrompt = $("#applyToPrompt");
+    const copyPrompt = $("#copyPrompt");
+    const copyHint = $("#copyHint");
+
+    const prompts = {
+      A: {
+        title: "同款：霓虹雨夜",
+        prompt: "夜雨霓虹街头，一只戴耳机的猫缓慢回头，电影质感，柔焦，轻微手持运镜，氛围感强。",
+        params: "风格：电影质感｜比例：16:9｜时长：4s｜运镜：慢推"
+      },
+      B: {
+        title: "同款：沙丘远景",
+        prompt: "金色沙丘与远方巨构遗迹，低角度广角镜头，史诗光影，尘埃粒子，缓慢横移运镜。",
+        params: "风格：写实摄影｜比例：21:9｜时长：5s｜运镜：横移"
+      },
+      C: {
+        title: "同款：纸艺城市",
+        prompt: "纸艺与折纸风城市，极简配色，海报排版留白，柔和顶光，静态镜头，高清细节。",
+        params: "风格：极简 UI｜比例：4:3｜输出：2K｜镜头：固定"
+      }
+    };
+
+    let lang = "zh";
+    function applyLang(next){
+      lang = next;
+      const dict = i18n[lang];
+      $$("[data-i18n]").forEach(el=>{
+        const key = el.getAttribute("data-i18n");
+        if(dict[key]) el.textContent = dict[key];
+      });
+      $("#langLabel").textContent = (lang === "zh") ? "CN" : "EN";
+      $("#prompt").placeholder = (lang==="zh")
+        ? "例：夜雨霓虹街头，一只戴耳机的猫缓慢回头，电影质感，柔焦，轻微手持运镜。"
+        : "Example: neon rainy street, a cat with headphones slowly turns back, cinematic, soft focus, slight handheld.";
+      applyToPrompt.textContent = (lang==="zh") ? "应用到输入框" : "Apply to input";
+      copyPrompt.textContent = (lang==="zh") ? "复制提示词" : "Copy prompt";
+      $("#closeModal").innerHTML = (lang==="zh") ? '关闭 <span class="kbd">Esc</span>' : 'Close <span class="kbd">Esc</span>';
+    }
+
+    function setTheme(theme){
+      document.documentElement.setAttribute("data-theme", theme);
+      localStorage.setItem("xh_theme", theme);
+    }
+
+    const savedTheme = localStorage.getItem("xh_theme");
+    if(savedTheme) setTheme(savedTheme);
+
+    const savedLang = localStorage.getItem("xh_lang");
+    if(savedLang && (savedLang==="zh" || savedLang==="en")) lang = savedLang;
+    applyLang(lang);
+
+    $("#themeBtn").addEventListener("click", ()=>{
+      const cur = document.documentElement.getAttribute("data-theme") || "dark";
+      setTheme(cur === "dark" ? "light" : "dark");
+    });
+
+    $("#langBtn").addEventListener("click", ()=>{
+      const next = (lang === "zh") ? "en" : "zh";
+      localStorage.setItem("xh_lang", next);
+      applyLang(next);
+    });
+
+    $$(".tab[role='tab'][data-mode]").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        $$(".tab[role='tab'][data-mode]").forEach(b=>b.setAttribute("aria-selected","false"));
+        btn.setAttribute("aria-selected","true");
+        const mode = btn.dataset.mode;
+        const t = $("#prompt");
+        if(mode==="video"){
+          t.placeholder = (lang==="zh") ? "例：夜雨霓虹街头，一只戴耳机的猫缓慢回头，电影质感，轻微手持运镜。" :
+            "Example: rainy neon street, a cat with headphones turns back, cinematic, slight handheld.";
+        }else if(mode==="image"){
+          t.placeholder = (lang==="zh") ? "例：纸艺城市海报，极简配色，留白，高清细节。" :
+            "Example: paper-craft city poster, minimal palette, clean whitespace, high detail.";
+        }else{
+          t.placeholder = (lang==="zh") ? "例：保留主体不变，替换背景为清晨薄雾森林，统一色调。" :
+            "Example: keep subject, replace background with misty forest morning, unify tone.";
+        }
+      });
+    });
+
+    $$(".tab[role='tab'][data-cv]").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        $$(".tab[role='tab'][data-cv]").forEach(b=>b.setAttribute("aria-selected","false"));
+        btn.setAttribute("aria-selected","true");
+        const cv = btn.dataset.cv;
+        if(cv==="layers"){
+          $("#cvText").innerHTML = `
+            <h3 style="margin-top:12px">${lang==="zh"?"在一张画布里管理所有元素":"Manage everything on one canvas"}</h3>
+            <ul>
+              <li>${lang==="zh"?"独立图层：主体、背景、文字、装饰分离":"Separate layers for subject/background/text"}</li>
+              <li>${lang==="zh"?"局部修改：只改一个细节，不影响整体风格":"Edit a detail without breaking the global style"}</li>
+              <li>${lang==="zh"?"一键导出：多尺寸适配封面/海报/短视频":"Export multiple sizes for covers/posters/shorts"}</li>
+            </ul>`;
+        }else{
+          $("#cvText").innerHTML = `
+            <h3 style="margin-top:12px">${lang==="zh"?"精细化控制：把不确定变成可选项":"Fine controls: turn uncertainty into options"}</h3>
+            <ul>
+              <li>${lang==="zh"?"区域约束：只重绘选中区域":"Region constraints: inpaint selected area only"}</li>
+              <li>${lang==="zh"?"一致性：锁定颜色/构图/主体特征":"Consistency: lock palette/composition/identity"}</li>
+              <li>${lang==="zh"?"版本对比：多方案并排选择":"Version compare: pick the best variant side-by-side"}</li>
+            </ul>`;
+        }
+      });
+    });
+
+    $("#fakeGen").addEventListener("click", ()=>{
+      const p = ($("#prompt").value || "").trim();
+      const style = $("#style").value;
+      const ratio = $("#ratio").value;
+      const summary = p ? (p.length > 60 ? p.slice(0, 60) + "…" : p) :
+        (lang==="zh" ? "（尚未输入提示词）" : "(no prompt yet)");
+      $("#previewText").textContent =
+        (lang==="zh"
+          ? `摘要：${summary} ｜ 风格：${style} ｜ 比例：${ratio}`
+          : `Summary: ${summary} | Style: ${style} | Ratio: ${ratio}`);
+    });
+
+    function openModal(kind){
+      const data = prompts[kind] || prompts.A;
+      modalTitle.textContent = (lang==="zh") ? "同款演示" : "Remix Demo";
+      modalH3.textContent = data.title;
+      modalDesc.textContent = data.prompt;
+      modalParams.textContent = data.params;
+      modal.setAttribute("open","");
+      modal.dataset.prompt = data.prompt;
+      copyHint.textContent = "";
+    }
+    $("#openDemo").addEventListener("click", ()=>openModal("A"));
+    $$(".work").forEach(card=>{
+      card.addEventListener("click", ()=>openModal(card.dataset.work));
+    });
+
+    function closeModal(){
+      modal.removeAttribute("open");
+      copyHint.textContent = "";
+    }
+    $("#closeModal").addEventListener("click", closeModal);
+    modal.addEventListener("click", (e)=>{ if(e.target === modal) closeModal(); });
+    window.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeModal(); });
+
+    applyToPrompt.addEventListener("click", ()=>{
+      $("#prompt").value = modal.dataset.prompt || "";
+      closeModal();
+      document.getElementById("prompt").scrollIntoView({behavior:"smooth", block:"center"});
+      $("#prompt").focus();
+    });
+
+    copyPrompt.addEventListener("click", async ()=>{
+      try{
+        await navigator.clipboard.writeText(modal.dataset.prompt || "");
+        copyHint.textContent = (lang==="zh") ? "已复制到剪贴板" : "Copied to clipboard";
+      }catch{
+        copyHint.textContent = (lang==="zh") ? "复制失败（浏览器限制）" : "Copy failed (browser restriction)";
+      }
+    });
+
+    window.addEventListener("keydown", (e)=>{
+      const isMac = navigator.platform.toUpperCase().includes("MAC");
+      if((isMac ? e.metaKey : e.ctrlKey) && e.key.toLowerCase()==="k"){
+        e.preventDefault();
+        $("#prompt").focus();
+      }
+    });
+
+    $$('a[href^="#"]').forEach(a=>{
+      a.addEventListener("click",(e)=>{
+        const id = a.getAttribute("href");
+        const el = document.querySelector(id);
+        if(el){
+          e.preventDefault();
+          el.scrollIntoView({behavior:"smooth", block:"start"});
+        }
+      });
+    });
+
+    $("#year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
