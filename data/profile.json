@@ -1,7 +1,7 @@
 {
   "name": {
     "zh": "小李",
-    "en": "Xiaoher"
+    "en": "Xiaoli"
   },
   "title": {
     "zh": "Unity 开发工程师",
@@ -21,7 +21,7 @@
     {
       "name": "GitHub",
       "icon": "github",
-      "url": "https://github.com/xiaoher001"
+      "url": "https://github.com/xiaoli"
     },
     {
       "name": "Email",
@@ -31,7 +31,7 @@
     {
       "name": "Blog",
       "icon": "link",
-      "url": "https://xiaoher001.github.io"
+      "url": "https://xiaoli.github.io"
     }
   ]
 }

@@ -308,13 +308,68 @@
         var tags = (it.tags || [])
           .map(function (tg) { return "<span>" + escapeHtml(tg) + "</span>"; })
           .join("");
-        var img = it.image
-          ? '<img class="proj-img" src="' + escapeHtml(it.image) + '" alt="' + escapeHtml(t(it.title)) + '">'
-          : '<img class="proj-img" src="assets/project-1.svg" alt="">';
+
+        // Media — three cases, in priority order:
+        //   1) video  -> <video> player (takes priority)
+        //   2) images -> carousel / slider (multiple preview shots)
+        //   3) image  -> single static image (backward compatible)
+        var media;
+        if (it.video) {
+          var poster = it.image ? ' poster="' + escapeHtml(it.image) + '"' : "";
+          media =
+            '<video class="proj-media" controls preload="metadata" ' +
+            'src="' + escapeHtml(it.video) + '"' + poster + "></video>";
+        } else if (it.images && it.images.length) {
+          var slides = it.images
+            .map(function (src, i) {
+              return (
+                '<div class="carousel-slide"><img class="carousel-img" src="' +
+                escapeHtml(src) + '" alt="' + escapeHtml(t(it.title)) + " " + (i + 1) + '"></div>'
+              );
+            })
+            .join("");
+          var dots = it.images
+            .map(function (_, i) {
+              return (
+                '<button class="carousel-dot' + (i === 0 ? " active" : "") +
+                '" data-go="' + i + '" aria-label="slide ' + (i + 1) + '"></button>'
+              );
+            })
+            .join("");
+          var multi = it.images.length > 1;
+          media =
+            '<div class="proj-carousel" data-index="0">' +
+            '<div class="carousel-track">' + slides + "</div>" +
+            (multi
+              ? '<button class="carousel-btn prev" data-dir="-1" aria-label="previous"><i class="fa-solid fa-chevron-left"></i></button>' +
+                '<button class="carousel-btn next" data-dir="1" aria-label="next"><i class="fa-solid fa-chevron-right"></i></button>' +
+                '<div class="carousel-dots">' + dots + "</div>"
+              : "") +
+            "</div>";
+        } else {
+          media = it.image
+            ? '<img class="proj-img" src="' + escapeHtml(it.image) + '" alt="' + escapeHtml(t(it.title)) + '">'
+            : '<img class="proj-img" src="assets/project-1.svg" alt="">';
+        }
+
+        // Video cards are <div> (the player has its own controls and must
+        // not trigger card navigation); the title links out when a URL exists.
+        if (it.video) {
+          var titleLink = it.link
+            ? '<a href="' + escapeHtml(it.link) + '" target="_blank" rel="noopener">' +
+              escapeHtml(t(it.title)) + "</a>"
+            : escapeHtml(t(it.title));
+          return (
+            '<div class="project-card reveal">' + media +
+            '<div class="proj-body"><h3>' + titleLink + "</h3>" +
+            '<p>' + escapeHtml(t(it.description)) + "</p>" +
+            '<div class="proj-tags">' + tags + "</div></div></div>"
+          );
+        }
+
         var href = it.link ? ' href="' + escapeHtml(it.link) + '" target="_blank" rel="noopener"' : "";
         return (
-          '<a class="project-card reveal"' + href + ">" +
-          img +
+          '<a class="project-card reveal"' + href + ">" + media +
           '<div class="proj-body"><h3>' + escapeHtml(t(it.title)) + "</h3>" +
           '<p>' + escapeHtml(t(it.description)) + "</p>" +
           '<div class="proj-tags">' + tags + "</div></div></a>"
@@ -343,10 +398,64 @@
       .join("");
   }
 
+  /* ---------------- Carousel ---------------- */
+  // Bound once via event delegation on #projGrid, so it keeps working
+  // after language toggles re-render the project cards.
+  function carouselGo(carousel, index) {
+    if (!carousel) return;
+    var slides = carousel.querySelectorAll(".carousel-slide");
+    var count = slides.length;
+    if (count === 0) return;
+    index = ((index % count) + count) % count; // wrap around
+    carousel.setAttribute("data-index", String(index));
+    var track = carousel.querySelector(".carousel-track");
+    if (track) track.style.transform = "translateX(" + (-index * 100) + "%)";
+    carousel.querySelectorAll(".carousel-dot").forEach(function (dot, i) {
+      dot.classList.toggle("active", i === index);
+    });
+  }
+
   /* ---------------- Interactions ---------------- */
   function initInteractions() {
+    if (state.inited) return; // guard against double-binding
+    state.inited = true;
     el("themeBtn").addEventListener("click", toggleTheme);
     el("langBtn").addEventListener("click", toggleLang);
+
+    // Project image carousels (event delegation on the grid container)
+    var projGrid = el("projGrid");
+    if (projGrid) {
+      projGrid.addEventListener("click", function (e) {
+        var btn = e.target.closest(".carousel-btn");
+        if (btn) {
+          var car = btn.closest(".proj-carousel");
+          var dir = parseInt(btn.getAttribute("data-dir"), 10) || 0;
+          carouselGo(car, (parseInt(car.getAttribute("data-index"), 10) || 0) + dir);
+          return;
+        }
+        var dot = e.target.closest(".carousel-dot");
+        if (dot) {
+          carouselGo(dot.closest(".proj-carousel"), parseInt(dot.getAttribute("data-go"), 10) || 0);
+        }
+      });
+      // Touch swipe for mobile
+      var startX = null;
+      projGrid.addEventListener("touchstart", function (e) {
+        var car = e.target.closest(".proj-carousel");
+        if (car) startX = e.touches[0].clientX;
+      }, { passive: true });
+      projGrid.addEventListener("touchend", function (e) {
+        if (startX === null) return;
+        var car = e.target.closest(".proj-carousel");
+        if (car) {
+          var dx = e.changedTouches[0].clientX - startX;
+          if (Math.abs(dx) > 40) {
+            carouselGo(car, (parseInt(car.getAttribute("data-index"), 10) || 0) + (dx < 0 ? 1 : -1));
+          }
+        }
+        startX = null;
+      }, { passive: true });
+    }
 
     // Mobile menu
     var menuBtn = el("menuBtn");

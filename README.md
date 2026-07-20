@@ -60,12 +60,45 @@ my-portfolio/
 | `skills.json` | 技能分类与进度 | `categories[].items[].name` + `level`(0-100) |
 | `experience.json` | 经历时间线 | `work` / `education` / `achievements` |
 | `certificates.json` | 证书荣誉卡片 | `items[].title` / `subtitle` / `category` |
-| `projects.json` | 项目卡片 | `items[].title` / `description` / `tags` / `image` / `link` |
+| `projects.json` | 项目卡片 | `items[].title` / `description` / `tags` / `image` / `images` / `video` / `link` |
 | `ui-strings.json` | 界面文案 | 导航、按钮、区块标题等 |
 
 **社交图标**：`socials[].icon` 支持 `github` / `email` / `blog` / `link` / `website` / `twitter`(x) / `linkedin` / `wechat` / `qq` / `phone` / `zhihu` / `bilibili` 等。
 
 **图片**：把 `assets/avatar.svg` 换成你的头像（可改名为 `avatar.jpg` 并同步修改 `profile.json` 中的 `avatar` 路径）；项目图同理。
+
+**图片轮播**：项目卡片支持多图轮播。用 `images` 数组（替代单个 `image`）即可，自动生成左右切换按钮 + 底部圆点导航，手机端支持左右滑动：
+
+```json
+{
+  "title": { "zh": "我的项目", "en": "My Project" },
+  "description": { "zh": "...", "en": "..." },
+  "tags": ["Unity3D"],
+  "images": ["assets/p1.svg", "assets/p2.svg", "assets/p3.svg"],  // 多图 → 轮播
+  "link": ""
+}
+```
+
+- 轮播会在图片数 ≥ 2 时显示切换按钮和指示点；只有 1 张图则不显示控件。
+- 切换逻辑用事件委托绑定在网格容器上，语言切换重新渲染后依然可用。
+
+**视频**：项目卡片支持本地视频。在 `projects.json` 的某个项目里加一个 `video` 字段，填视频路径即可：
+
+```json
+{
+  "title": { "zh": "我的项目", "en": "My Project" },
+  "description": { "zh": "...", "en": "..." },
+  "tags": ["Unity3D"],
+  "image": "assets/project-1.svg",   // 作为视频封面（poster），可选
+  "video": "assets/demo.mp4",        // 本地视频文件，渲染为 <video controls>
+  "link": ""                         // 有 video 时，标题会变为可点击链接
+}
+```
+
+- 有 `video` 的项目会显示为带播放控件的视频，点击视频不会触发卡片跳转；标题在有 `link` 时仍可作为外链。
+- 视频文件放在 `assets/` 目录（如 `demo.mp4`），路径相对于 `index.html`。
+- 直接双击 `index.html` 无法加载（CORS 限制），请用本地服务器预览。
+- 部署到 GitHub / Gitee 时视频会随仓库上传；注意单文件别太大（建议 < 20MB，否则 Pages 加载慢）。大视频建议放 B 站/对象存储，再改用 iframe 嵌入。
 
 > ⚠️ 改完 JSON 后记得保存。若页面没更新，刷新时强制刷新（Ctrl+F5）清缓存。
 

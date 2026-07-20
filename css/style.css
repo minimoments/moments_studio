@@ -4,8 +4,9 @@
    ========================================================= */
 
 :root {
-  --accent: #6366f1;
-  --accent-2: #8b5cf6;
+  /* Warm, clean palette inspired by https://www.imsyy.top/ */
+  --accent: #f4a759;
+  --accent-2: #f97316;
   --radius: 16px;
   --max-width: 1100px;
   --nav-h: 64px;
@@ -15,28 +16,28 @@
 
 /* ---------- Dark theme (default) ---------- */
 [data-theme="dark"] {
-  --bg: #0f1117;
-  --bg-soft: #161922;
-  --bg-card: #1c2030;
-  --text: #e8eaf0;
-  --text-soft: #a3a8b8;
-  --border: #2a2f40;
-  --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  --skill-track: #2a2f40;
-  --glow: rgba(99, 102, 241, 0.35);
+  --bg: #0a0a0b;
+  --bg-soft: rgba(255, 255, 255, 0.05);
+  --bg-card: rgba(255, 255, 255, 0.06);
+  --text: #fafafa;
+  --text-soft: #a1a1aa;
+  --border: rgba(255, 255, 255, 0.08);
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --skill-track: rgba(255, 255, 255, 0.08);
+  --glow: rgba(244, 167, 89, 0.30);
 }
 
 /* ---------- Light theme ---------- */
 [data-theme="light"] {
-  --bg: #f6f7fb;
+  --bg: #f8f8f6;
   --bg-soft: #ffffff;
-  --bg-card: #ffffff;
-  --text: #1a1d29;
-  --text-soft: #5a6072;
-  --border: #e3e6ef;
-  --shadow: 0 10px 30px rgba(40, 45, 70, 0.1);
-  --skill-track: #e9ecf3;
-  --glow: rgba(99, 102, 241, 0.2);
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --text: #18181b;
+  --text-soft: #71717a;
+  --border: rgba(0, 0, 0, 0.08);
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --skill-track: #e5e5e5;
+  --glow: rgba(244, 167, 89, 0.18);
 }
 
 /* ---------- Base ---------- */
@@ -279,9 +280,11 @@ img { max-width: 100%; display: block; }
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 24px;
-  transition: transform var(--transition), border-color var(--transition);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
 }
-.skill-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+.skill-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: var(--shadow); }
 .skill-card h3 {
   font-size: 1.05rem;
   margin-bottom: 18px;
@@ -364,6 +367,8 @@ img { max-width: 100%; display: block; }
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 16px 20px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 .achievements-list .ach-label {
   display: inline-block;
@@ -383,9 +388,11 @@ img { max-width: 100%; display: block; }
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 22px;
-  transition: transform var(--transition), border-color var(--transition);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
 }
-.info-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+.info-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: var(--shadow); }
 .info-card h3 { font-size: 1.02rem; line-height: 1.4; }
 .info-card p { color: var(--text-soft); font-size: 0.88rem; margin-top: 8px; }
 .badge {
@@ -410,6 +417,8 @@ img { max-width: 100%; display: block; }
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
 }
 .project-card:hover {
@@ -418,6 +427,35 @@ img { max-width: 100%; display: block; }
   box-shadow: var(--shadow);
 }
 .project-card .proj-img { aspect-ratio: 3 / 2; width: 100%; object-fit: cover; }
+.project-card .proj-media { aspect-ratio: 3 / 2; width: 100%; object-fit: cover; background: #000; display: block; }
+
+/* ---------- Image carousel ---------- */
+.proj-carousel { position: relative; overflow: hidden; aspect-ratio: 3 / 2; background: #000; }
+.carousel-track { display: flex; height: 100%; transition: transform 0.45s ease; }
+.carousel-slide { flex: 0 0 100%; width: 100%; height: 100%; }
+.carousel-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.carousel-btn {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 36px; height: 36px; border: none; cursor: pointer;
+  border-radius: 50%; display: grid; place-items: center;
+  background: rgba(0, 0, 0, 0.45); color: #fff; font-size: 0.9rem;
+  opacity: 0; transition: opacity var(--transition), background var(--transition);
+  backdrop-filter: blur(4px);
+}
+.project-card:hover .carousel-btn { opacity: 1; }
+.carousel-btn:hover { background: var(--accent); }
+.carousel-btn.prev { left: 10px; }
+.carousel-btn.next { right: 10px; }
+.carousel-dots {
+  position: absolute; bottom: 10px; left: 0; right: 0;
+  display: flex; justify-content: center; gap: 7px;
+}
+.carousel-dot {
+  width: 8px; height: 8px; padding: 0; border: none; cursor: pointer;
+  border-radius: 999px; background: rgba(255, 255, 255, 0.55);
+  transition: width var(--transition), background var(--transition);
+}
+.carousel-dot.active { width: 20px; background: #fff; }
 .project-card .proj-body { padding: 20px; }
 .project-card h3 { font-size: 1.1rem; }
 .project-card p { color: var(--text-soft); font-size: 0.9rem; margin: 8px 0 14px; }
