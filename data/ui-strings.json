@@ -1,0 +1,114 @@
+{
+  "nav": {
+    "home": {
+      "zh": "首页",
+      "en": "Home"
+    },
+    "skills": {
+      "zh": "技能",
+      "en": "Skills"
+    },
+    "experience": {
+      "zh": "经历",
+      "en": "Experience"
+    },
+    "certificates": {
+      "zh": "证书荣誉",
+      "en": "Certificates"
+    },
+    "projects": {
+      "zh": "项目",
+      "en": "Projects"
+    },
+    "contact": {
+      "zh": "联系",
+      "en": "Contact"
+    }
+  },
+  "hero": {
+    "greeting": {
+      "zh": "你好，我是",
+      "en": "Hi, I'm"
+    },
+    "ctaResume": {
+      "zh": "查看简历",
+      "en": "Resume"
+    },
+    "ctaContact": {
+      "zh": "联系我",
+      "en": "Contact Me"
+    },
+    "scrollHint": {
+      "zh": "向下滚动了解更多",
+      "en": "Scroll down to learn more"
+    }
+  },
+  "sectionTitle": {
+    "skills": {
+      "zh": "专业技能",
+      "en": "Professional Skills"
+    },
+    "experience": {
+      "zh": "个人经历",
+      "en": "Experience"
+    },
+    "certificates": {
+      "zh": "证书与荣誉",
+      "en": "Certificates & Honors"
+    },
+    "projects": {
+      "zh": "精选项目",
+      "en": "Selected Projects"
+    }
+  },
+  "experienceTabs": {
+    "work": {
+      "zh": "工作经历",
+      "en": "Work Experience"
+    },
+    "education": {
+      "zh": "教育经历",
+      "en": "Education"
+    },
+    "achievements": {
+      "zh": "成就与社区",
+      "en": "Achievements & Community"
+    }
+  },
+  "contact": {
+    "title": {
+      "zh": "联系我",
+      "en": "Get In Touch"
+    },
+    "subtitle": {
+      "zh": "欢迎通过以下方式与我取得联系。",
+      "en": "Feel free to reach out through any of the channels below."
+    },
+    "rights": {
+      "zh": "版权所有",
+      "en": "All rights reserved"
+    }
+  },
+  "controls": {
+    "theme": {
+      "zh": "切换主题",
+      "en": "Toggle theme"
+    },
+    "language": {
+      "zh": "切换语言",
+      "en": "Switch language"
+    },
+    "menu": {
+      "zh": "菜单",
+      "en": "Menu"
+    }
+  },
+  "loading": {
+    "zh": "加载中…",
+    "en": "Loading…"
+  },
+  "error": {
+    "zh": "数据加载失败，请检查 data 目录下的 JSON 文件。",
+    "en": "Failed to load data. Please check the JSON files in the data folder."
+  }
+}

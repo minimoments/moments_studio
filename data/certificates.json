@@ -1,0 +1,88 @@
+{
+  "items": [
+    {
+      "title": {
+        "zh": "汽车视觉三维可视化展示系统",
+        "en": "Automotive Vision 3D Visualization Display System"
+      },
+      "subtitle": {
+        "zh": "计算机软件著作权登记证书",
+        "en": "Computer Software Copyright Registration Certificate"
+      },
+      "category": {
+        "zh": "国家级",
+        "en": "national-level"
+      }
+    },
+    {
+      "title": {
+        "zh": "交通标志科普问答系统",
+        "en": "Traffic Sign Science Popularization Q&A System"
+      },
+      "subtitle": {
+        "zh": "计算机软件著作权登记证书",
+        "en": "Computer Software Copyright Registration Certificate"
+      },
+      "category": {
+        "zh": "国家级",
+        "en": "national-level"
+      }
+    },
+    {
+      "title": {
+        "zh": "基于 Unity 的汽车前照灯检测培训系统设计与实现",
+        "en": "Design and Implementation of Unity based Automotive Front Beam Inspection Training System"
+      },
+      "subtitle": {
+        "zh": "校级优秀毕业设计",
+        "en": "Excellent graduation project at the school level"
+      },
+      "category": {
+        "zh": "学术",
+        "en": "Academic"
+      }
+    },
+    {
+      "title": {
+        "zh": "优秀毕业生",
+        "en": "Outstanding Graduate"
+      },
+      "subtitle": {
+        "zh": "多次获得校级二、三等奖学金",
+        "en": "Received multiple second-class and third class scholarships from the school"
+      },
+      "category": {
+        "zh": "学术",
+        "en": "Academic"
+      }
+    },
+    {
+      "title": {
+        "zh": "VR 建筑爆破与安全培训",
+        "en": "VR Building Blasting and Safety Training"
+      },
+      "subtitle": {
+        "zh": "2023 第六届中国虚拟现实大赛全国总决赛",
+        "en": "The 6th China Virtual Reality Competition National Finals in 2023"
+      },
+      "category": {
+        "zh": "国家级",
+        "en": "national-level"
+      }
+    },
+    {
+      "title": {
+        "zh": "AR 伤寒杂病论",
+        "en": "AR Treatise on Febrile and Miscellaneous Diseases"
+      },
+      "subtitle": {
+        "zh": "2023 中国大学生计算机设计大赛吉林省级赛",
+        "en": "2023 China University Computer Design Competition Jilin Provincial Competition"
+      },
+      "category": {
+        "zh": "学术",
+        "en": "Academic"
+      }
+    }
+  ]
+}

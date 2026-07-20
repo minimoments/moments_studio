@@ -1,0 +1,136 @@
+{
+  "categories": [
+    {
+      "name": {
+        "zh": "Unity 引擎",
+        "en": "Unity Engine"
+      },
+      "items": [
+        {
+          "name": {
+            "zh": "Unity 脚本 (C#)",
+            "en": "Unity Scripting (C#)"
+          },
+          "level": 92
+        },
+        {
+          "name": {
+            "zh": "性能分析与优化",
+            "en": "Profiling / Optimization"
+          },
+          "level": 85
+        },
+        {
+          "name": {
+            "zh": "插件 / 交互开发",
+            "en": "Plugin / Interaction Dev"
+          },
+          "level": 88
+        }
+      ]
+    },
+    {
+      "name": {
+        "zh": "编程能力",
+        "en": "Programming"
+      },
+      "items": [
+        {
+          "name": {
+            "zh": "C# / 架构设计",
+            "en": "C# / Architecture"
+          },
+          "level": 95
+        },
+        {
+          "name": {
+            "zh": "数据结构 / 算法",
+            "en": "Data Structures / Algorithms"
+          },
+          "level": 85
+        }
+      ]
+    },
+    {
+      "name": {
+        "zh": "XR 技术",
+        "en": "XR Technology"
+      },
+      "items": [
+        {
+          "name": {
+            "zh": "VR / AR 开发",
+            "en": "VR / AR Development"
+          },
+          "level": 85
+        },
+        {
+          "name": {
+            "zh": "VR 设备适配",
+            "en": "VR Device Adaptation"
+          },
+          "level": 90
+        }
+      ]
+    },
+    {
+      "name": {
+        "zh": "人机交互 (HCI)",
+        "en": "HCI & Interaction"
+      },
+      "items": [
+        {
+          "name": {
+            "zh": "Leap Motion 手势",
+            "en": "Leap Motion Gestures"
+          },
+          "level": 88
+        },
+        {
+          "name": {
+            "zh": "Arduino / 传感器",
+            "en": "Arduino / Sensors"
+          },
+          "level": 83
+        }
+      ]
+    },
+    {
+      "name": {
+        "zh": "技术美术 (TA)",
+        "en": "Tech Art (TA)"
+      },
+      "items": [
+        {
+          "name": {
+            "zh": "着色器 / 后处理",
+            "en": "Shader / Post-processing"
+          },
+          "level": 86
+        },
+        {
+          "name": {
+            "zh": "动画 / 渲染",
+            "en": "Animation / Rendering"
+          },
+          "level": 80
+        }
+      ]
+    },
+    {
+      "name": {
+        "zh": "前端 / 小程序",
+        "en": "Frontend / Mini Program"
+      },
+      "items": [
+        {
+          "name": {
+            "zh": "微信小程序 / XR Frame",
+            "en": "WeChat Mini Program / XR Frame"
+          },
+          "level": 87
+        }
+      ]
+    }
+  ]
+}

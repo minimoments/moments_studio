@@ -1,0 +1,101 @@
+{
+  "work": [
+    {
+      "period": {
+        "zh": "2025.04 - 至今",
+        "en": "2025.04 - Present"
+      },
+      "title": {
+        "zh": "Unity 开发工程师",
+        "en": "Unity Developer"
+      },
+      "company": {
+        "zh": "明阳卓越（沈阳）科技有限公司",
+        "en": "Mingyang Zhuoyue (Shenyang) Technology Co., Ltd."
+      },
+      "description": {
+        "zh": "负责虚拟现实仿真系统的研发与优化。",
+        "en": "Responsible for the R&D and optimization of virtual reality simulation systems."
+      }
+    },
+    {
+      "period": {
+        "zh": "2024.03 - 2024.10",
+        "en": "2024.03 - 2024.10"
+      },
+      "title": {
+        "zh": "Unity 工程师",
+        "en": "Unity Engineer"
+      },
+      "company": {
+        "zh": "吉林道动江科技有限公司",
+        "en": "Jilin Daodongjiang Technology Co., Ltd."
+      },
+      "description": {
+        "zh": "参与 VR/AR 交互项目的开发与交付。",
+        "en": "Participated in the development and delivery of VR/AR interaction projects."
+      }
+    },
+    {
+      "period": {
+        "zh": "2023.09 - 2023.12",
+        "en": "2023.09 - 2023.12"
+      },
+      "title": {
+        "zh": "Unity VR 实习生",
+        "en": "Unity VR Intern"
+      },
+      "company": {
+        "zh": "一汽-大众（长春）",
+        "en": "FAW-Volkswagen (Changchun)"
+      },
+      "description": {
+        "zh": "参与 VR 培训系统的原型和搭建。",
+        "en": "Participated in the prototyping and construction of VR training systems."
+      }
+    }
+  ],
+  "education": [
+    {
+      "period": {
+        "zh": "2020.09 - 2024.06",
+        "en": "2020.09 - 2024.06"
+      },
+      "title": {
+        "zh": "虚拟现实技术（本科）",
+        "en": "Virtual Reality Technology (Bachelor)"
+      },
+      "company": {
+        "zh": "吉林动画学院",
+        "en": "Jilin Animation Institute"
+      },
+      "description": {
+        "zh": "GPA：3.94/4.00（排名 3/61）。荣誉：优秀毕业生、全国 VR 大赛一等奖。",
+        "en": "GPA: 3.94/4.00 (Rank 3/61). Awards: Outstanding Graduate, 1st Prize in National VR Competition (NCVR)."
+      }
+    }
+  ],
+  "achievements": [
+    {
+      "label": "Sharing",
+      "text": {
+        "zh": "发布 44 篇 Unity 教程（32.5 万+ 浏览），开源多个项目。",
+        "en": "Published 44 Unity tutorials (325k+ views), open-sourced multiple projects."
+      }
+    },
+    {
+      "label": "Service",
+      "text": {
+        "zh": "完成 80+ 技术咨询订单，解决 135+ 个问题。",
+        "en": "Completed 80+ technical consulting orders, resolved 135+ issues."
+      }
+    },
+    {
+      "label": "Networking",
+      "text": {
+        "zh": "活跃于 Unity 官方社区与行业论坛。",
+        "en": "Active in Unity official community and industry forums."
+      }
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "name": {
+    "zh": "小李",
+    "en": "Xiaoher"
+  },
+  "title": {
+    "zh": "Unity 开发工程师",
+    "en": "Unity Developer"
+  },
+  "tagline": {
+    "zh": "专注 VR/AR 与交互仿真",
+    "en": "specializing in VR/AR & Interactive Simulation"
+  },
+  "intro": {
+    "zh": "2024 年毕业于吉林动画学院（VR 技术方向）。拥有 1 年以上企业级 Unity 开发经验。专注于虚拟仿真、VR/AR 与 HCI 人机交互项目。",
+    "en": "Graduated in 2024 from Jilin Animation Institute (VR Technology). Over 1 year of enterprise Unity experience. Focusing on Virtual Simulation, VR/AR, and HCI projects."
+  },
+  "avatar": "assets/avatar.svg",
+  "resumeUrl": "",
+  "socials": [
+    {
+      "name": "GitHub",
+      "icon": "github",
+      "url": "https://github.com/xiaoher001"
+    },
+    {
+      "name": "Email",
+      "icon": "email",
+      "url": "mailto:example@example.com"
+    },
+    {
+      "name": "Blog",
+      "icon": "link",
+      "url": "https://xiaoher001.github.io"
+    }
+  ]
+}

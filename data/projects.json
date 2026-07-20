@@ -1,0 +1,100 @@
+{
+  "items": [
+    {
+      "title": {
+        "zh": "汽车可视化系统",
+        "en": "Automotive Visualization System"
+      },
+      "description": {
+        "zh": "基于 Unity3D 的汽车可视化工具，支持多种配置与高性能优化。",
+        "en": "Unity3D-based car visualizer with multiple configurations and high-performance optimization."
+      },
+      "tags": [
+        "Unity3D",
+        "Visualization"
+      ],
+      "image": "assets/project-1.svg",
+      "link": ""
+    },
+    {
+      "title": {
+        "zh": "VR 历史展厅",
+        "en": "VR History Exhibition Hall"
+      },
+      "description": {
+        "zh": "高精度建模、烘焙光照与沉浸式 VR 交互体验。",
+        "en": "High-fidelity modeling, baked lighting, and immersive VR interaction."
+      },
+      "tags": [
+        "VR",
+        "HTC Vive"
+      ],
+      "image": "assets/project-2.svg",
+      "link": ""
+    },
+    {
+      "title": {
+        "zh": "交通标志答题系统",
+        "en": "Traffic Sign Quiz System"
+      },
+      "description": {
+        "zh": "具有交互式问答与数据追踪的教育仿真系统。",
+        "en": "Educational simulation system with interactive quizzes and data tracking."
+      },
+      "tags": [
+        "Education",
+        "UI/UX"
+      ],
+      "image": "assets/project-3.svg",
+      "link": ""
+    },
+    {
+      "title": {
+        "zh": "小鱼 AI 聊天",
+        "en": "Xiaoyudot AI Chat"
+      },
+      "description": {
+        "zh": "集成语音识别与 AI 接口，实现自然语言对话。",
+        "en": "Integrated voice recognition and AI API for natural language conversation."
+      },
+      "tags": [
+        "AI",
+        "Voice API"
+      ],
+      "image": "assets/project-4.svg",
+      "link": ""
+    },
+    {
+      "title": {
+        "zh": "电子签名墙互动平台",
+        "en": "Electronic Signature Wall Interactive Platform"
+      },
+      "description": {
+        "zh": "在屏幕上书写签名并叠加到卡片，上传服务器供扫码下载。",
+        "en": "Write the signature on the screen and overlay it on the card, upload it to the server for scanning and downloading."
+      },
+      "tags": [
+        "LineRenderer",
+        "HTTP"
+      ],
+      "image": "assets/project-5.svg",
+      "link": ""
+    },
+    {
+      "title": {
+        "zh": "心理沙盘互动系统",
+        "en": "Psychological Sandbox Interactive System"
+      },
+      "description": {
+        "zh": "点击屏幕放置沙具，可加载保存沙盘场景并导出心理报告。",
+        "en": "Click on the screen to place sand tools, which can load and save sandbox scenes, and export psychological reports."
+      },
+      "tags": [
+        "PDF",
+        "Outline"
+      ],
+      "image": "assets/project-6.svg",
+      "link": ""
+    }
+  ]
+}
